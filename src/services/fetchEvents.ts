@@ -20,7 +20,7 @@ const betSettledTopic = ethers.id(
   "BetSettled(address,uint256,uint256,uint8,uint256,bool,uint256,address)"
 );
 
-export async function fetchBetSettledLogs(fromBlock: number, toBlock: number) {
+export async function fetchBetLogs(fromBlock: number, toBlock: number) {
   const filter = {
     address: contracts[0],
     fromBlock,
@@ -28,27 +28,10 @@ export async function fetchBetSettledLogs(fromBlock: number, toBlock: number) {
     topics: [betSettledTopic],
   };
 
-  const rawLogs = await provider.getLogs(filter);
-  console.log("Logs found:", rawLogs.length);
-  const parsed = rawLogs.map((log) => betSettledIface.parseLog(log).args);
-  return parsed;
-}
-
-export async function setStats(fromBlock: number, toBlock: number) {
-  console.log("Fetching events...");
-  const dataTable = []
-  const bets = await fetchBetSettledLogs(fromBlock, toBlock);
-    bets.forEach((bet) => {
-      dataTable.push({
-        player: bet.player,
-        amount: bet.amount.toString(),
-        targetNumber: bet.targetNumber.toString(),
-        comparisonType: bet.comparisonType,
-        result: bet.result.toString(),
-        won: bet.won,
-        payout: bet.payout.toString(),
-        token: bet.token,
-      });
-    });
-    console.log(dataTable)
+  const fetchedLogs = await provider.getLogs(filter);
+  console.log("Logs found:", fetchedLogs.length);
+  const parsedLogs = fetchedLogs.map(
+    (log) => betSettledIface.parseLog(log).args
+  );
+  return parsedLogs;
 }

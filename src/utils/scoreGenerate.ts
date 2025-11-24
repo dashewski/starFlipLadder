@@ -1,9 +1,7 @@
-
-
 export function calculateScore(totalBet: number, gamesPlayed: number, wins: number): number {
-  const betFactor = 0.001;      
-  const gameFactor = 10;      
-  const winFactor = 50;         
+  const betFactor = 0.0000000000001;      
+  const gameFactor = 2;      
+  const winFactor = 5;         
 
   const scoreFromBets = totalBet * betFactor;
   const scoreFromGames = gamesPlayed * gameFactor;
